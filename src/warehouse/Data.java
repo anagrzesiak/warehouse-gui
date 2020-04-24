@@ -3,10 +3,11 @@ package warehouse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Data {
+public class Data implements Serializable {
     public FullfillmentCenterContainer getAll() {
         FullfillmentCenterContainer c1 = new FullfillmentCenterContainer();
         FullfillmentCenter sklep = new FullfillmentCenter("STUDENT WINO", 1000, "Z*wiercie");
@@ -66,6 +67,11 @@ public class Data {
 
         return list;
     }
+
+    public List getData1(){
+        return getAll().getItems();
+    }
+
 
     public ObservableList getData(){
         ObservableList items= FXCollections.observableList(getAll().getItems());

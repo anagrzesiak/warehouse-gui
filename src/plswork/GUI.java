@@ -14,12 +14,13 @@ import warehouse.Data;
 import warehouse.Item;
 
 import javax.swing.*;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class GUI implements Initializable {
+public class GUI implements Initializable, Serializable {
     @FXML
     private ComboBox<String> combobox1;
     @FXML
@@ -39,16 +40,18 @@ public class GUI implements Initializable {
     @FXML
     private Button remove;
     @FXML
+    private Button exportButton;
+    @FXML
+    private Button importButton;
+    @FXML
     private TableView<Item> cart;
     @FXML
     private TableColumn<Item, String> cartColumn;
-    @FXML
-    private TextArea summary;
-
 
     List<Item> cartt = new ArrayList<>();
     Data d = new Data();
     ObservableList items = FXCollections.observableList(d.getData());
+    List<Item> itemss=new ArrayList<>();
     FilteredList<Item> f = new FilteredList<>(items);
 
     @Override
@@ -58,12 +61,18 @@ public class GUI implements Initializable {
         priceColumn.setCellValueFactory(new PropertyValueFactory<Item, Float>("price"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<Item, Integer>("quantity"));
         centerColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("center"));
-        itemTable.setItems(items);
+        try {
+            deserialize("centerState.csv");
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("ERROR IMPORTING DATA");
+        }
         cartColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
-        cart.setItems(null);
-        summary.setText("CHOOSE A CENTER\n" +
-                "\nTO SEE MORE INFO");
-       itemTable.setRowFactory(tv -> new TableRow<Item>() {
+        try {
+            deserialize("boughtItems.csv");
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("ERROR IMPORTING DATA");
+        }
+        itemTable.setRowFactory(tv -> new TableRow<Item>() {
            @Override
            protected void updateItem(Item o, boolean b) {
                super.updateItem(o, b);
@@ -76,6 +85,63 @@ public class GUI implements Initializable {
                }
            }
        });
+    }
+
+    @FXML
+    private void exportData(ActionEvent event) throws IOException {
+        FileOutputStream fos = new FileOutputStream("boughtItems.csv");
+        ObjectOutputStream out = new ObjectOutputStream(fos);
+        out.writeObject(cartt);
+        out.close();
+
+        FileOutputStream fos1 = new FileOutputStream("centerState.csv");
+        ObjectOutputStream out1 = new ObjectOutputStream(fos1);
+        out1.writeObject(itemss);
+        out1.close();
+    }
+
+    private void deserialize(String s) throws IOException, ClassNotFoundException {
+        try {
+            if(s.equals("boughtItems.csv")) {
+                cartt = new ArrayList<>();
+
+                FileInputStream fis = new FileInputStream(s);
+                ObjectInputStream in = new ObjectInputStream(fis);
+
+                cartt = (ArrayList<Item>) in.readObject();
+                in.close();
+                ObservableList<Item> yourcart = FXCollections.observableList(cartt);
+                cart.setItems(yourcart);
+            }
+            else{
+                itemss =  new ArrayList<>();
+
+                FileInputStream fis = new FileInputStream(s);
+                ObjectInputStream in = new ObjectInputStream(fis);
+
+                itemss = (ArrayList<Item>) in.readObject();
+                in.close();
+                items = FXCollections.observableList(itemss);
+                itemTable.setItems(items);
+            }
+        }
+        catch(IOException | ClassNotFoundException ex){
+            JOptionPane.showMessageDialog(null, "CANNOT IMPORT - GETTING DATA FROM DATA GENERATOR");
+            if(s.equals("boughtItems.csv")) {
+                cart.setItems(null);
+            }
+            else{
+                itemss=d.getData1();
+                items=FXCollections.observableList(itemss);
+                itemTable.setItems(items);
+            }
+        }
+    }
+
+    @FXML
+    private void importData(ActionEvent event) throws IOException, ClassNotFoundException {
+        deserialize("boughtItems.csv");
+        deserialize("centerState.csv");
     }
 
     @FXML
@@ -102,11 +168,8 @@ public class GUI implements Initializable {
         String i = combobox1.getValue();
         if (i.equals("WSZYSTKIE")) {
             itemTable.setItems(items);
-            summary.setText("CHOOSE A CENTER\n" +
-                    "\nTO SEE MORE INFO");
         } else {
             itemTable.setItems(d.getDobre(i));
-            summary.setText(d.getAll().getCenterOK(i).summaryText());
         }
     }
 
@@ -125,8 +188,9 @@ public class GUI implements Initializable {
                     System.out.println("ILOSC USUWANIE: " +finalSelected1.getQuantity());
                     finalSelected1.more();
                     System.out.println("ILOSC USUWANIE: " +finalSelected1.getQuantity());
-                    items.remove(finalSelected1);
-                    items.add(finalSelected1);
+                    itemss.remove(finalSelected1);
+                    itemss.add(finalSelected1);
+                    items=FXCollections.observableList(itemss);
                     itemTable.setItems(items);
                     ObservableList<Item> yourcart = FXCollections.observableList(cartt);
                     yourcart.remove(finalSelected1);
@@ -159,8 +223,9 @@ public class GUI implements Initializable {
                         System.out.println("QUANTITY: " +finalSelected1.getQuantity());
                         finalSelected1.less(number);
                         System.out.println("QUANTITY: " +finalSelected1.getQuantity());
-                        items.remove(finalSelected1);
-                        items.add(finalSelected1);
+                        itemss.remove(finalSelected1);
+                        itemss.add(finalSelected1);
+                        items=FXCollections.observableList(itemss);
                         itemTable.setItems(items);
                         ObservableList<Item> yourcart = FXCollections.observableList(cartt);
                         cart.setItems(yourcart);

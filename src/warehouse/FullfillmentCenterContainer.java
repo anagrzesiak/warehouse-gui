@@ -1,11 +1,12 @@
 package warehouse;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FullfillmentCenterContainer {
+public class FullfillmentCenterContainer implements Serializable {
    // public List<FullfillmentCenter> fullfillmentCentersList = new ArrayList();
     public Map<String, FullfillmentCenter> Centers = new HashMap();
 

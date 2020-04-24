@@ -1,6 +1,8 @@
 package warehouse;
 
-public enum ItemCondition {
+import java.io.Serializable;
+
+public enum ItemCondition implements Serializable {
     NEW{
         @Override
         public String toString() {

@@ -1,12 +1,13 @@
 package warehouse;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class FullfillmentCenter {  //tutaj sa rozne funkcje z lab2, ktorych nie wykorzystywalam ale no moga sie przydac
+public class FullfillmentCenter implements Serializable {  //tutaj sa rozne funkcje z lab2, ktorych nie wykorzystywalam ale no moga sie przydac
     public String centerLocation;
     public int totalWeight;
     public int totalQuantity;

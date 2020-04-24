@@ -1,6 +1,8 @@
 package warehouse;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable {
     String name;
     ItemCondition condition;
     double weight;
