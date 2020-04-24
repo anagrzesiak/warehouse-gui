@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane prefHeight="507.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plswork.GUI">
+   <children>
+      <ComboBox fx:id="combobox1" layoutX="14.0" layoutY="14.0" onAction="#combobox1Action" prefHeight="25.0" prefWidth="546.0" />
+      <TableView fx:id="itemTable" layoutX="15.0" layoutY="51.0" onMouseClicked="#clickedRecord" prefHeight="448.0" prefWidth="546.0">
+        <columns>
+          <TableColumn id="a" fx:id="nameColumn" prefWidth="218.0" text="NAME" />
+          <TableColumn id="b" fx:id="priceColumn" prefWidth="71.0" text="PRICE" />
+            <TableColumn id="c" fx:id="quantityColumn" prefWidth="78.0" text="QUANTITY" />
+            <TableColumn id="d" fx:id="centerColumn" prefWidth="159.0" text="CENTER" />
+        </columns>
+      </TableView>
+      <TextField fx:id="search" layoutX="571.0" layoutY="217.0" onAction="#searchBar" prefHeight="25.0" prefWidth="177.0" promptText="Search item by name(PRESS ENTER)" />
+      <Button fx:id="add" layoutX="571.0" layoutY="109.0" mnemonicParsing="false" onAction="#clickedRecord" prefHeight="47.0" prefWidth="177.0" text="BUY PRODUCT" />
+      <TableView fx:id="cart" layoutX="570.0" layoutY="249.0" onMouseClicked="#clickedRecordd" prefHeight="249.0" prefWidth="177.0">
+         <columns>
+            <TableColumn fx:id="cartColumn" prefWidth="175.0" text="BOUGHT" />
+         </columns>
+      </TableView>
+      <TextArea fx:id="summary" layoutX="571.0" layoutY="14.0" prefHeight="89.0" prefWidth="177.0" />
+      <Button fx:id="remove" layoutX="571.0" layoutY="163.0" mnemonicParsing="false" onAction="#clickedRecordd" prefHeight="47.0" prefWidth="177.0" text="REMOVE PRODUCT" />
+   </children>
+</AnchorPane>
