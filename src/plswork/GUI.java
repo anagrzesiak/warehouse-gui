@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.WindowEvent;
 import warehouse.Data;
 import warehouse.Item;
 
@@ -48,11 +49,20 @@ public class GUI implements Initializable, Serializable {
     @FXML
     private TableColumn<Item, String> cartColumn;
 
+    public void onClose() throws IOException {
+        serialize();
+    }
+
     List<Item> cartt = new ArrayList<>();
     Data d = new Data();
     ObservableList items = FXCollections.observableList(d.getData());
     List<Item> itemss=new ArrayList<>();
     FilteredList<Item> f = new FilteredList<>(items);
+
+    private void closeWindowEvent(WindowEvent event) {
+        System.out.println("Window close request ...");
+
+    }
 
     @Override
     public void initialize(URL FXMLFileLocation, ResourceBundle resources) {
@@ -85,10 +95,27 @@ public class GUI implements Initializable, Serializable {
                }
            }
        });
+        cart.setRowFactory(tv -> new TableRow<Item>() {
+            @Override
+            protected void updateItem(Item o, boolean b) {
+                super.updateItem(o, b);
+                if (o == null) {
+                    setTooltip(null);
+                } else {
+                    Tooltip tooltip = new Tooltip();
+                    tooltip.setText(o.summaryItem());
+                    setTooltip(tooltip);
+                }
+            }
+        });
     }
 
     @FXML
     private void exportData(ActionEvent event) throws IOException {
+       serialize();
+    }
+
+    public void serialize() throws IOException {
         FileOutputStream fos = new FileOutputStream("boughtItems.csv");
         ObjectOutputStream out = new ObjectOutputStream(fos);
         out.writeObject(cartt);
@@ -100,6 +127,7 @@ public class GUI implements Initializable, Serializable {
         out1.close();
     }
 
+
     private void deserialize(String s) throws IOException, ClassNotFoundException {
         try {
             if(s.equals("boughtItems.csv")) {
@@ -110,6 +138,9 @@ public class GUI implements Initializable, Serializable {
 
                 cartt = (ArrayList<Item>) in.readObject();
                 in.close();
+                for(Item i : cartt){
+                    i.changeCond();
+                }
                 ObservableList<Item> yourcart = FXCollections.observableList(cartt);
                 cart.setItems(yourcart);
             }

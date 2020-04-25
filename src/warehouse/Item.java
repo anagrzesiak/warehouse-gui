@@ -11,6 +11,10 @@ public class Item implements Serializable {
     String centersName;
     FullfillmentCenter center;
 
+    public void changeCond(){
+        condition=ItemCondition.NEW;
+    }
+
     public void less(int x){
         quantity=quantity-x;
     }
@@ -47,11 +51,16 @@ public class Item implements Serializable {
         this.center=center;
     }
 
+    public String summaryItem() {
+        String output = "Item's name:" + name + "\nCondition:" + condition + "\nWeight:" + weight + "\nPrice: " +price +"\nCenter: " +centersName;
+        return output;
+    }
+
+
     public void print() {
         System.out.println("Item's name:" + name);
         System.out.println("Condition: " + condition);
         System.out.println("Weight: " + weight);
-        System.out.println("Quantity: " + quantity);
         System.out.println("Price: " + price);
         System.out.println("Center: " + centersName);
     }
