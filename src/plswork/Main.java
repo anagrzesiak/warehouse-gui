@@ -24,11 +24,7 @@ public class Main extends Application {
         alert.setContentText("You might want to click import to save changes. Do you want to?");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            return true;
-        } else {
-           return false;
-        }
+        return result.get() == ButtonType.OK;
     }
 
     public static void main(String[] args) {
