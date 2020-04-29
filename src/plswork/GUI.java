@@ -131,8 +131,6 @@ public class GUI implements Initializable, Serializable {
     private void deserialize(String s) throws IOException, ClassNotFoundException {
         try {
             if(s.equals("boughtItems.csv")) {
-                cartt = new ArrayList<>();
-
                 FileInputStream fis = new FileInputStream(s);
                 ObjectInputStream in = new ObjectInputStream(fis);
 
@@ -145,8 +143,6 @@ public class GUI implements Initializable, Serializable {
                 cart.setItems(yourcart);
             }
             else{
-                itemss =  new ArrayList<>();
-
                 FileInputStream fis = new FileInputStream(s);
                 ObjectInputStream in = new ObjectInputStream(fis);
 
@@ -223,8 +219,8 @@ public class GUI implements Initializable, Serializable {
                     System.out.println("ILOSC USUWANIE: " +finalSelected1.getQuantity());
                     finalSelected1.more();
                     System.out.println("ILOSC USUWANIE: " +finalSelected1.getQuantity());
-                    itemss.remove(finalSelected1);
-                    itemss.add(finalSelected1);
+                    itemss.remove(finalSelected1);//nie wiem dlaczego po imporcie jak zwracam te produkty to one sie dodaja drugi raz do tabeli;// zgaduje ze dlatego, ze nie czyta ich jako powtorzenie istniejacych ale nie wiem jak to naprawic, przeciez operuje caly czas na tej samej liscie? chyba
+                    //itemss.add(finalSelected1);
                     items=FXCollections.observableList(itemss);
                     itemTable.setItems(items);
                     ObservableList<Item> yourcart = FXCollections.observableList(cartt);
