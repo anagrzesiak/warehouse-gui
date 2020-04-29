@@ -52,7 +52,7 @@ public class Item implements Serializable {
     }
 
     public String summaryItem() {
-        String output = "Item's name:" + name + "\nCondition:" + condition + "\nWeight:" + weight + "\nPrice: " +price +"\nCenter: " +centersName;
+        String output = "Item's name:" + name + "\nCondition:" + condition + "\nWeight:" + weight + "\nPrice: " +price +"\nLeft in center: " +quantity +"\nCenter: " +centersName;
         return output;
     }
 

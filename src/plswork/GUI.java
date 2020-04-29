@@ -13,12 +13,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.WindowEvent;
 import warehouse.Data;
 import warehouse.Item;
-
 import javax.swing.*;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GUI implements Initializable, Serializable {
@@ -157,7 +157,11 @@ public class GUI implements Initializable, Serializable {
             }
         }
         catch(IOException | ClassNotFoundException ex){
-            JOptionPane.showMessageDialog(null, "CANNOT IMPORT - GETTING DATA FROM DATA GENERATOR");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Warning");
+            alert.setContentText("CANNOT IMPORT DATABASE - GETTING DATA FROM DATA GENERATOR");
+            alert.showAndWait();
             if(s.equals("boughtItems.csv")) {
                 cart.setItems(null);
             }
@@ -244,10 +248,14 @@ public class GUI implements Initializable, Serializable {
             public void handle(ActionEvent e) {
                 System.out.println("CLICKED");
                 if(finalSelected1!=null){
-                    String m = JOptionPane.showInputDialog("HOW MANY?"); //probowalam zrobic to korzystajac z Dialogs, ale to 3rd party library:/ wiem, że to okropne uzywac tu swinga przepraszam!!!
-                    int number = Integer.parseInt(m);
+                    TextInputDialog dialog = new TextInputDialog(" ");
+                    dialog.setTitle("Input");
+                    dialog.setHeaderText("How many?");
+                    dialog.setContentText("Please enter how many:(");
+                    Optional<String> result = dialog.showAndWait();
+                    int number = Integer.parseInt(result.get());
                     if (number <= finalSelected1.getQuantity()) {
-                        System.out.println(m);
+                        System.out.println(result.get());
                         for(int i=0; i<number; i++){
                             cartt.add(finalSelected1);
                         }
@@ -261,7 +269,11 @@ public class GUI implements Initializable, Serializable {
                         ObservableList<Item> yourcart = FXCollections.observableList(cartt);
                         cart.setItems(yourcart);
                     } else {
-                        JOptionPane.showMessageDialog(null, "BEZ PRZESADY eh");
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error Dialog");
+                        alert.setHeaderText("Error");
+                        alert.setContentText("Ooops, too many!");
+                        alert.showAndWait();
                     }
                 }
             }
